@@ -1,0 +1,1797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GR Global - Production Tracker</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        body { background: #f5f7fa; color: #333; }
+        .header { background: #2c3e50; color: white; padding: 20px; display: flex; justify-content: space-between; align-items: center; }
+        .header h1 { font-size: 24px; }
+        .user-info { display: flex; align-items: center; gap: 15px; }
+        .container { display: grid; grid-template-columns: 250px 1fr; min-height: calc(100vh - 80px); }
+        .sidebar { background: #34495e; color: white; padding: 20px; }
+        .sidebar ul { list-style: none; }
+        .sidebar li { padding: 15px 10px; border-bottom: 1px solid #4a6278; cursor: pointer; }
+        .sidebar li:hover { background: #3d566e; }
+        .main-content { padding: 25px; }
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 30px; }
+        .stat-card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .stat-card h3 { color: #7f8c8d; font-size: 14px; margin-bottom: 10px; }
+        .stat-value { font-size: 32px; font-weight: bold; color: #2c3e50; }
+        .orders-table { background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        table { width: 100%; border-collapse: collapse; }
+        th { background: #ecf0f1; padding: 15px; text-align: left; color: #2c3e50; }
+        td { padding: 12px 15px; border-bottom: 1px solid #eee; }
+        .status { padding: 5px 10px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+        .status-active { background: #d5f4e6; color: #27ae60; }
+        .status-delayed { background: #fdebd0; color: #e67e22; }
+        .progress-bar { height: 8px; background: #ecf0f1; border-radius: 4px; margin-top: 5px; overflow: hidden; }
+        .progress-fill { height: 100%; background: #3498db; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1><i class="fas fa-shoe-prints"></i> GR Global Production Tracker</h1>
+        <div class="user-info">
+            <span>Production Manager: John Smith</span>
+            <i class="fas fa-user-circle fa-2x"></i>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="sidebar">
+            <ul>
+                <li><i class="fas fa-tachometer-alt"></i> Dashboard</li>
+                <li><i class="fas fa-list-ol"></i> All Orders</li>
+                <li><i class="fas fa-plus-circle"></i> New Order</li>
+                <li><i class="fas fa-clipboard-check"></i> Production Input</li>
+                <li><i class="fas fa-chart-bar"></i> Reports</li>
+                <li><i class="fas fa-cog"></i> Settings</li>
+            </ul>
+        </div>
+        
+        <div class="main-content">
+            <h2>Production Dashboard</h2>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Active Orders</h3>
+                    <div class="stat-value">18</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Today's Output</h3>
+                    <div class="stat-value">1,240</div>
+                    <span>pairs</span>
+                </div>
+                <div class="stat-card">
+                    <h3>Delayed Stages</h3>
+                    <div class="stat-value">3</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Overall Efficiency</h3>
+                    <div class="stat-value">94%</div>
+                    <div class="progress-bar"><div class="progress-fill" style="width: 94%;"></div></div>
+                </div>
+            </div>
+            
+            <h3 style="margin: 25px 0 15px;">Recent Orders</h3>
+            <div class="orders-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Customer</th>
+                            <th>Model</th>
+                            <th>Quantity</th>
+                            <th>Progress</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>GR-2024-0587</strong></td>
+                            <td>SafetyPro Co</td>
+                            <td>SteelGuard Pro</td>
+                            <td>500 pairs</td>
+                            <td>
+                                <div>75% complete</div>
+                                <div class="progress-bar"><div class="progress-fill" style="width: 75%;"></div></div>
+                            </td>
+                            <td><span class="status status-active">Active</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>GR-2024-0586</strong></td>
+                            <td>BuildRight Inc</td>
+                            <td>ComfortWalk Plus</td>
+                            <td>300 pairs</td>
+                            <td>
+                                <div>45% complete</div>
+                                <div class="progress-bar"><div class="progress-fill" style="width: 45%;"></div></div>
+                            </td>
+                            <td><span class="status status-delayed">Delayed at Fitting</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html><!-- production-input.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Production Input - GR Global</title>
+    <style>
+        .input-form { max-width: 800px; margin: 30px auto; background: white; padding: 25px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: bold; color: #2c3e50; }
+        input, select, textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-size: 16px; }
+        .scan-btn { background: #3498db; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; margin-left: 10px; }
+        .size-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin-top: 15px; }
+        .size-input { text-align: center; }
+        .stage-tabs { display: flex; background: #ecf0f1; border-radius: 5px; overflow: hidden; margin-bottom: 20px; }
+        .stage-tab { flex: 1; text-align: center; padding: 15px; cursor: pointer; }
+        .stage-tab.active { background: #3498db; color: white; }
+        .submit-btn { background: #27ae60; color: white; border: none; padding: 15px 30px; border-radius: 5px; font-size: 16px; cursor: pointer; width: 100%; }
+    </style>
+</head>
+<body>
+    <div class="input-form">
+        <h2><i class="fas fa-clipboard-check"></i> Production Stage Input</h2>
+        
+        <div class="stage-tabs">
+            <div class="stage-tab active">Cutting</div>
+            <div class="stage-tab">Fitting</div>
+            <div class="stage-tab">Bottoming</div>
+            <div class="stage-tab">Pasting</div>
+            <div class="stage-tab">Packing</div>
+        </div>
+        
+        <div class="form-group">
+            <label>Scan Order Barcode</label>
+            <div style="display: flex;">
+                <input type="text" id="order-barcode" placeholder="GR-2024-0587" readonly>
+                <button class="scan-btn"><i class="fas fa-barcode"></i> Scan</button>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label>Production Stage: <strong>Cutting</strong></label>
+        </div>
+        
+        <div class="form-group">
+            <label>Date & Time</label>
+            <input type="datetime-local" value="2024-01-15T14:30">
+        </div>
+        
+        <div class="form-group">
+            <label>Supervisor</label>
+            <select>
+                <option>Maria Rodriguez</option>
+                <option>James Wilson</option>
+                <option>Sarah Chen</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label>Size-wise Completion (pairs)</label>
+            <div class="size-grid">
+                <div class="size-input"><label>Size 7</label><input type="number" value="45"></div>
+                <div class="size-input"><label>Size 8</label><input type="number" value="52"></div>
+                <div class="size-input"><label>Size 9</label><input type="number" value="48"></div>
+                <div class="size-input"><label>Size 10</label><input type="number" value="38"></div>
+                <div class="size-input"><label>Size 11</label><input type="number" value="41"></div>
+                <div class="size-input"><label>Size 12</label><input type="number" value="30"></div>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label>Defective Count</label>
+            <input type="number" value="3">
+        </div>
+        
+        <div class="form-group">
+            <label>Notes (if any)</label>
+            <textarea rows="3" placeholder="Any issues or observations..."></textarea>
+        </div>
+        
+        <button class="submit-btn"><i class="fas fa-save"></i> Submit Production Data</button>
+    </div>
+</body>
+</html><!-- order-detail.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Detail - GR Global</title>
+    <style>
+        .order-header { background: linear-gradient(135deg, #3498db, #2c3e50); color: white; padding: 25px; border-radius: 10px; margin-bottom: 25px; }
+        .order-meta { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 20px; margin-top: 15px; }
+        .meta-item { background: rgba(255,255,255,0.2); padding: 10px 15px; border-radius: 5px; }
+        .production-flow { display: flex; justify-content: space-between; margin: 30px 0; position: relative; }
+        .flow-stage { text-align: center; flex: 1; position: relative; }
+        .stage-circle { width: 60px; height: 60px; background: #ecf0f1; border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+        .stage-circle.complete { background: #27ae60; color: white; }
+        .stage-circle.current { background: #3498db; color: white; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(52, 152, 219, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(52, 152, 219, 0); } 100% { box-shadow: 0 0 0 0 rgba(52, 152, 219, 0); } }
+        .size-table { overflow-x: auto; }
+        .size-row { display: grid; grid-template-columns: 100px repeat(5, 1fr); border-bottom: 1px solid #eee; padding: 15px 0; }
+        .size-header { font-weight: bold; background: #f8f9fa; }
+        .stage-cell { text-align: center; padding: 8px; }
+        .complete-tick { color: #27ae60; }
+    </style>
+</head>
+<body>
+    <div class="order-header">
+        <h2>Order: GR-2024-0587</h2>
+        <p>Customer: SafetyPro Co | Model: SteelGuard Pro | Total: 500 pairs</p>
+        <div class="order-meta">
+            <div class="meta-item"><strong>Start Date:</strong> Jan 10, 2024</div>
+            <div class="meta-item"><strong>Due Date:</strong> Jan 25, 2024</div>
+            <div class="meta-item"><strong>Priority:</strong> High</div>
+            <div class="meta-item"><strong>Colors:</strong> Black, Brown</div>
+        </div>
+    </div>
+    
+    <div class="production-flow">
+        <div class="flow-stage">
+            <div class="stage-circle complete"><i class="fas fa-cut"></i></div>
+            <div>Cutting</div>
+            <small>Completed Jan 12</small>
+        </div>
+        <div class="flow-stage">
+            <div class="stage-circle current"><i class="fas fa-screwdriver"></i></div>
+            <div>Fitting</div>
+            <small>In Progress</small>
+        </div>
+        <div class="flow-stage">
+            <div class="stage-circle"><i class="fas fa-layer-group"></i></div>
+            <div>Bottoming</div>
+            <small>Pending</small>
+        </div>
+        <div class="flow-stage">
+            <div class="stage-circle"><i class="fas fa-glue"></i></div>
+            <div>Pasting</div>
+            <small>Pending</small>
+        </div>
+        <div class="flow-stage">
+            <div class="stage-circle"><i class="fas fa-box"></i></div>
+            <div>Packing</div>
+            <small>Pending</small>
+        </div>
+    </div>
+    
+    <h3>Size-wise Production Status</h3>
+    <div class="size-table">
+        <div class="size-row size-header">
+            <div>Size/Color</div>
+            <div>Cutting</div>
+            <div>Fitting</div>
+            <div>Bottoming</div>
+            <div>Pasting</div>
+            <div>Packing</div>
+        </div>
+        <div class="size-row">
+            <div><strong>Size 8 Black</strong><br><small>100 pairs</small></div>
+            <div class="stage-cell"><i class="fas fa-check-circle complete-tick"></i><br>100/100</div>
+            <div class="stage-cell"><i class="fas fa-spinner"></i><br>65/100</div>
+            <div class="stage-cell">0/100</div>
+            <div class="stage-cell">0/100</div>
+            <div class="stage-cell">0/100</div>
+        </div>
+        <div class="size-row">
+            <div><strong>Size 9 Brown</strong><br><small>150 pairs</small></div>
+            <div class="stage-cell"><i class="fas fa-check-circle complete-tick"></i><br>150/150</div>
+            <div class="stage-cell"><i class="fas fa-spinner"></i><br>90/150</div>
+            <div class="stage-cell">0/150</div>
+            <div class="stage-cell">0/150</div>
+            <div class="stage-cell">0/150</div>
+        </div>
+    </div>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GR Global - Shoe Manufacturing Tracker</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --success: #27ae60;
+            --warning: #e67e22;
+            --danger: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --gray: #95a5a6;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .app-container {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            min-height: 100vh;
+        }
+
+        /* Header Styles */
+        .header {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, var(--primary), #1a252f);
+            color: white;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo h1 {
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .logo-icon {
+            background: var(--secondary);
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .notification-icon {
+            position: relative;
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--danger);
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            background: white;
+            border-right: 1px solid #e1e5e9;
+            padding: 25px 0;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .nav-section {
+            margin-bottom: 30px;
+        }
+
+        .nav-title {
+            padding: 0 25px;
+            color: var(--gray);
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .nav-links {
+            list-style: none;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px 25px;
+            color: #555;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+
+        .nav-link:hover {
+            background-color: #f8f9fa;
+            color: var(--primary);
+        }
+
+        .nav-link.active {
+            background-color: #e8f4fc;
+            color: var(--secondary);
+            border-left-color: var(--secondary);
+            font-weight: 500;
+        }
+
+        .nav-link i {
+            width: 20px;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .page-header h2 {
+            color: var(--primary);
+            font-size: 28px;
+            font-weight: 600;
+        }
+
+        .page-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 6px;
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-light {
+            background: white;
+            color: var(--primary);
+            border: 1px solid #ddd;
+        }
+
+        /* Dashboard Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+        }
+
+        .stat-icon.blue { background: var(--secondary); }
+        .stat-icon.green { background: var(--success); }
+        .stat-icon.orange { background: var(--warning); }
+        .stat-icon.red { background: var(--danger); }
+
+        .stat-trend {
+            font-size: 14px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+
+        .trend-up { background: #d5f4e6; color: var(--success); }
+        .trend-down { background: #fdebd0; color: var(--warning); }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: var(--gray);
+            font-size: 14px;
+        }
+
+        /* Production Flow */
+        .production-flow-container {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .section-title {
+            font-size: 18px;
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .production-flow {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .flow-connector {
+            position: absolute;
+            top: 45px;
+            left: 50px;
+            right: 50px;
+            height: 3px;
+            background: var(--light);
+            z-index: 1;
+        }
+
+        .flow-stage {
+            text-align: center;
+            flex: 1;
+            position: relative;
+            z-index: 2;
+        }
+
+        .stage-circle {
+            width: 60px;
+            height: 60px;
+            background: white;
+            border: 3px solid var(--light);
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            color: var(--gray);
+            transition: all 0.3s ease;
+        }
+
+        .stage-circle.completed {
+            background: var(--success);
+            border-color: var(--success);
+            color: white;
+        }
+
+        .stage-circle.in-progress {
+            background: var(--secondary);
+            border-color: var(--secondary);
+            color: white;
+            animation: pulse 2s infinite;
+        }
+
+        .stage-circle.delayed {
+            background: var(--warning);
+            border-color: var(--warning);
+            color: white;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(52, 152, 219, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(52, 152, 219, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(52, 152, 219, 0); }
+        }
+
+        .stage-name {
+            font-weight: 500;
+            margin-bottom: 5px;
+            color: var(--primary);
+        }
+
+        .stage-status {
+            font-size: 13px;
+            color: var(--gray);
+        }
+
+        /* Orders Table */
+        .orders-container {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+        }
+
+        .table-header {
+            padding: 20px 25px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            padding: 10px 15px 10px 40px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            width: 250px;
+            font-size: 14px;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table th {
+            background: #f8f9fa;
+            padding: 15px 20px;
+            text-align: left;
+            color: var(--primary);
+            font-weight: 600;
+            border-bottom: 1px solid #eee;
+        }
+
+        .table td {
+            padding: 15px 20px;
+            border-bottom: 1px solid #f1f1f1;
+        }
+
+        .table tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        .order-id {
+            color: var(--secondary);
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .order-id:hover {
+            text-decoration: underline;
+        }
+
+        .progress-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 8px;
+            background: var(--light);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 4px;
+        }
+
+        .progress-70 { width: 70%; background: var(--success); }
+        .progress-45 { width: 45%; background: var(--warning); }
+        .progress-90 { width: 90%; background: var(--success); }
+        .progress-30 { width: 30%; background: var(--danger); }
+
+        .status-badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-active { background: #d5f4e6; color: var(--success); }
+        .status-delayed { background: #fdebd0; color: var(--warning); }
+        .status-completed { background: #e8f4fc; color: var(--secondary); }
+        .status-onhold { background: #f2f2f2; color: var(--gray); }
+
+        /* Order Detail Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 1000px;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            padding: 25px 30px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            color: var(--primary);
+            font-size: 22px;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--gray);
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .close-modal:hover {
+            background: #f5f5f5;
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        .order-info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .info-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .info-card h4 {
+            color: var(--gray);
+            font-size: 14px;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .info-card p {
+            color: var(--primary);
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        /* Size Tracking Table */
+        .size-tracking {
+            margin-top: 30px;
+        }
+
+        .size-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        .size-table th {
+            background: #f1f8ff;
+            padding: 12px 15px;
+            text-align: center;
+            color: var(--primary);
+            font-weight: 600;
+            border: 1px solid #e1e5e9;
+        }
+
+        .size-table td {
+            padding: 12px 15px;
+            text-align: center;
+            border: 1px solid #e1e5e9;
+        }
+
+        .stage-cell {
+            position: relative;
+        }
+
+        .stage-complete {
+            color: var(--success);
+            font-weight: 600;
+        }
+
+        .stage-inprogress {
+            color: var(--secondary);
+            font-weight: 600;
+        }
+
+        .stage-pending {
+            color: var(--gray);
+        }
+
+        .stage-count {
+            display: block;
+            font-size: 12px;
+            color: var(--gray);
+            margin-top: 5px;
+        }
+
+        /* Production Input Form */
+        .production-form {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .size-inputs-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .size-input {
+            text-align: center;
+        }
+
+        .size-input label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: var(--gray);
+        }
+
+        .size-input input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        /* Footer */
+        .app-footer {
+            grid-column: 1 / -1;
+            background: var(--primary);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 14px;
+            border-top: 1px solid #34495e;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .app-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                display: none;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .production-flow {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .flow-connector {
+                display: none;
+            }
+            
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .table-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .search-box input {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-shoe-prints"></i>
+                </div>
+                <h1>GR Global Production Tracker</h1>
+            </div>
+            <div class="user-menu">
+                <div class="notification-icon">
+                    <i class="far fa-bell"></i>
+                    <div class="notification-badge">3</div>
+                </div>
+                <div class="user-profile">
+                    <div class="user-avatar">JS</div>
+                    <div>
+                        <div style="font-weight: 500;">John Smith</div>
+                        <div style="font-size: 12px; color: #bdc3c7;">Production Manager</div>
+                    </div>
+                    <i class="fas fa-chevron-down" style="font-size: 14px;"></i>
+                </div>
+            </div>
+        </header>
+
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="nav-section">
+                <div class="nav-title">Main</div>
+                <ul class="nav-links">
+                    <li><a href="#" class="nav-link active" data-page="dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="#" class="nav-link" data-page="orders"><i class="fas fa-list-ol"></i> All Orders</a></li>
+                    <li><a href="#" class="nav-link" data-page="new-order"><i class="fas fa-plus-circle"></i> New Order</a></li>
+                </ul>
+            </div>
+            <div class="nav-section">
+                <div class="nav-title">Production</div>
+                <ul class="nav-links">
+                    <li><a href="#" class="nav-link" data-page="production-input"><i class="fas fa-clipboard-check"></i> Production Input</a></li>
+                    <li><a href="#" class="nav-link" data-page="tracking"><i class="fas fa-search"></i> Order Tracking</a></li>
+                    <li><a href="#" class="nav-link" data-page="bottlenecks"><i class="fas fa-exclamation-triangle"></i> Bottlenecks</a></li>
+                </ul>
+            </div>
+            <div class="nav-section">
+                <div class="nav-title">Reports</div>
+                <ul class="nav-links">
+                    <li><a href="#" class="nav-link" data-page="reports"><i class="fas fa-chart-bar"></i> Production Reports</a></li>
+                    <li><a href="#" class="nav-link" data-page="analytics"><i class="fas fa-chart-line"></i> Analytics</a></li>
+                    <li><a href="#" class="nav-link" data-page="export"><i class="fas fa-file-export"></i> Export Data</a></li>
+                </ul>
+            </div>
+            <div class="nav-section">
+                <div class="nav-title">System</div>
+                <ul class="nav-links">
+                    <li><a href="#" class="nav-link" data-page="users"><i class="fas fa-users"></i> Users</a></li>
+                    <li><a href="#" class="nav-link" data-page="settings"><i class="fas fa-cog"></i> Settings</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Main Content - Dashboard (Default) -->
+        <main class="main-content" id="main-content">
+            <!-- Dashboard content will be loaded here -->
+            <div class="page-content" id="dashboard-content">
+                <div class="page-header">
+                    <h2>Production Dashboard</h2>
+                    <div class="page-actions">
+                        <button class="btn btn-light"><i class="fas fa-download"></i> Export</button>
+                        <button class="btn btn-primary"><i class="fas fa-plus"></i> New Order</button>
+                    </div>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon blue">
+                                <i class="fas fa-industry"></i>
+                            </div>
+                            <div class="stat-trend trend-up">
+                                <i class="fas fa-arrow-up"></i> 12%
+                            </div>
+                        </div>
+                        <div class="stat-value">18</div>
+                        <div class="stat-label">Active Orders</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon green">
+                                <i class="fas fa-shoe-prints"></i>
+                            </div>
+                            <div class="stat-trend trend-up">
+                                <i class="fas fa-arrow-up"></i> 8%
+                            </div>
+                        </div>
+                        <div class="stat-value">1,240</div>
+                        <div class="stat-label">Today's Output (pairs)</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon orange">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <div class="stat-trend trend-down">
+                                <i class="fas fa-arrow-down"></i> 2%
+                            </div>
+                        </div>
+                        <div class="stat-value">3</div>
+                        <div class="stat-label">Delayed Stages</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon red">
+                                <i class="fas fa-times-circle"></i>
+                            </div>
+                            <div class="stat-trend trend-up">
+                                <i class="fas fa-arrow-up"></i> 1.5%
+                            </div>
+                        </div>
+                        <div class="stat-value">24</div>
+                        <div class="stat-label">Defective Today</div>
+                    </div>
+                </div>
+
+                <!-- Production Flow -->
+                <div class="production-flow-container">
+                    <h3 class="section-title">Current Production Flow</h3>
+                    <div class="production-flow">
+                        <div class="flow-connector"></div>
+                        <div class="flow-stage">
+                            <div class="stage-circle completed">
+                                <i class="fas fa-cut"></i>
+                            </div>
+                            <div class="stage-name">Cutting</div>
+                            <div class="stage-status">100% Complete</div>
+                        </div>
+                        <div class="flow-stage">
+                            <div class="stage-circle in-progress">
+                                <i class="fas fa-screwdriver"></i>
+                            </div>
+                            <div class="stage-name">Fitting</div>
+                            <div class="stage-status">65% Complete</div>
+                        </div>
+                        <div class="flow-stage">
+                            <div class="stage-circle">
+                                <i class="fas fa-layer-group"></i>
+                            </div>
+                            <div class="stage-name">Bottoming</div>
+                            <div class="stage-status">Not Started</div>
+                        </div>
+                        <div class="flow-stage">
+                            <div class="stage-circle">
+                                <i class="fas fa-glue"></i>
+                            </div>
+                            <div class="stage-name">Pasting</div>
+                            <div class="stage-status">Pending</div>
+                        </div>
+                        <div class="flow-stage">
+                            <div class="stage-circle">
+                                <i class="fas fa-box"></i>
+                            </div>
+                            <div class="stage-name">Packing</div>
+                            <div class="stage-status">Pending</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Orders Table -->
+                <div class="orders-container">
+                    <div class="table-header">
+                        <h3 class="section-title">Recent Production Orders</h3>
+                        <div class="table-actions">
+                            <div class="search-box">
+                                <i class="fas fa-search"></i>
+                                <input type="text" placeholder="Search orders...">
+                            </div>
+                            <button class="btn btn-light"><i class="fas fa-filter"></i> Filter</button>
+                        </div>
+                    </div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Customer</th>
+                                <th>Model</th>
+                                <th>Quantity</th>
+                                <th>Progress</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="orders-table-body">
+                            <!-- Orders will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <p>GR Global Work Shoe Manufacture &copy; 2024 | Production Tracker v1.0</p>
+            <p style="font-size: 12px; margin-top: 5px; color: #bdc3c7;">Last updated: Today, 14:30</p>
+        </footer>
+    </div>
+
+    <!-- Order Detail Modal -->
+    <div class="modal-overlay" id="order-detail-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Order Details: <span id="modal-order-id">GR-2024-0587</span></h3>
+                <button class="close-modal" id="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="order-info-grid">
+                    <div class="info-card">
+                        <h4>Customer</h4>
+                        <p id="modal-customer">SafetyPro Co</p>
+                    </div>
+                    <div class="info-card">
+                        <h4>Model</h4>
+                        <p id="modal-model">SteelGuard Pro</p>
+                    </div>
+                    <div class="info-card">
+                        <h4>Total Quantity</h4>
+                        <p id="modal-quantity">500 pairs</p>
+                    </div>
+                    <div class="info-card">
+                        <h4>Start Date</h4>
+                        <p id="modal-start-date">Jan 10, 2024</p>
+                    </div>
+                    <div class="info-card">
+                        <h4>Due Date</h4>
+                        <p id="modal-due-date">Jan 25, 2024</p>
+                    </div>
+                    <div class="info-card">
+                        <h4>Priority</h4>
+                        <p id="modal-priority">High</p>
+                    </div>
+                </div>
+
+                <h3 class="section-title">Size-wise Production Status</h3>
+                <div class="size-tracking">
+                    <table class="size-table">
+                        <thead>
+                            <tr>
+                                <th>Size/Color</th>
+                                <th>Cutting</th>
+                                <th>Fitting</th>
+                                <th>Bottoming</th>
+                                <th>Pasting</th>
+                                <th>Packing</th>
+                            </tr>
+                        </thead>
+                        <tbody id="size-tracking-body">
+                            <!-- Size tracking data will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Production Input Form (Hidden by default) -->
+    <div class="page-content" id="production-input-content" style="display: none;">
+        <div class="page-header">
+            <h2>Production Stage Input</h2>
+            <div class="page-actions">
+                <button class="btn btn-light" id="back-to-dashboard"><i class="fas fa-arrow-left"></i> Back</button>
+            </div>
+        </div>
+
+        <div class="production-form">
+            <div class="form-group">
+                <label>Scan Order Barcode</label>
+                <div style="display: flex; gap: 10px;">
+                    <input type="text" class="form-control" id="barcode-input" placeholder="GR-2024-0587" value="GR-2024-0587">
+                    <button class="btn btn-primary" id="scan-btn"><i class="fas fa-barcode"></i> Scan</button>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Production Stage</label>
+                    <select class="form-control" id="production-stage">
+                        <option value="cutting">Cutting</option>
+                        <option value="fitting" selected>Fitting</option>
+                        <option value="bottoming">Bottoming</option>
+                        <option value="pasting">Pasting</option>
+                        <option value="packing">Packing</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Date & Time</label>
+                    <input type="datetime-local" class="form-control" id="production-date" value="2024-01-15T14:30">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Supervisor</label>
+                <select class="form-control" id="supervisor">
+                    <option>Maria Rodriguez</option>
+                    <option selected>James Wilson</option>
+                    <option>Sarah Chen</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Size-wise Completion (pairs)</label>
+                <div class="size-inputs-grid" id="size-inputs">
+                    <!-- Size inputs will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Defective Count</label>
+                    <input type="number" class="form-control" id="defective-count" value="3" min="0">
+                </div>
+                <div class="form-group">
+                    <label>Re-work Count</label>
+                    <input type="number" class="form-control" id="rework-count" value="2" min="0">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Notes (if any)</label>
+                <textarea class="form-control" id="production-notes" rows="3" placeholder="Any issues or observations...">Machine #3 had minor alignment issue, fixed by 2pm.</textarea>
+            </div>
+
+            <div style="margin-top: 30px;">
+                <button class="btn btn-success" id="submit-production" style="width: 100%; padding: 15px;">
+                    <i class="fas fa-save"></i> Submit Production Data
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample Data
+        const ordersData = [
+            {
+                id: "GR-2024-0587",
+                customer: "SafetyPro Co",
+                model: "SteelGuard Pro",
+                quantity: "500 pairs",
+                progress: 70,
+                status: "active",
+                startDate: "Jan 10, 2024",
+                dueDate: "Jan 25, 2024",
+                priority: "High",
+                colors: "Black, Brown"
+            },
+            {
+                id: "GR-2024-0586",
+                customer: "BuildRight Inc",
+                model: "ComfortWalk Plus",
+                quantity: "300 pairs",
+                progress: 45,
+                status: "delayed",
+                startDate: "Jan 8, 2024",
+                dueDate: "Jan 22, 2024",
+                priority: "Medium",
+                colors: "Black, Gray"
+            },
+            {
+                id: "GR-2024-0585",
+                customer: "Industrial Gear Ltd",
+                model: "HeavyDuty Max",
+                quantity: "750 pairs",
+                progress: 90,
+                status: "active",
+                startDate: "Jan 5, 2024",
+                dueDate: "Jan 30, 2024",
+                priority: "High",
+                colors: "Brown"
+            },
+            {
+                id: "GR-2024-0584",
+                customer: "Construction Pros",
+                model: "SiteMaster Lite",
+                quantity: "200 pairs",
+                progress: 30,
+                status: "onhold",
+                startDate: "Jan 12, 2024",
+                dueDate: "Jan 28, 2024",
+                priority: "Low",
+                colors: "Yellow, Black"
+            }
+        ];
+
+        const sizeTrackingData = [
+            { size: "Size 8 Black", total: 100, cutting: 100, fitting: 65, bottoming: 0, pasting: 0, packing: 0 },
+            { size: "Size 9 Brown", total: 150, cutting: 150, fitting: 90, bottoming: 0, pasting: 0, packing: 0 },
+            { size: "Size 10 Black", total: 120, cutting: 120, fitting: 75, bottoming: 0, pasting: 0, packing: 0 },
+            { size: "Size 11 Brown", total: 80, cutting: 80, fitting: 50, bottoming: 0, pasting: 0, packing: 0 },
+            { size: "Size 12 Black", total: 50, cutting: 50, fitting: 30, bottoming: 0, pasting: 0, packing: 0 }
+        ];
+
+        const sizeOptions = ["Size 7", "Size 8", "Size 9", "Size 10", "Size 11", "Size 12"];
+
+        // DOM Elements
+        const mainContent = document.getElementById('main-content');
+        const dashboardContent = document.getElementById('dashboard-content');
+        const productionInputContent = document.getElementById('production-input-content');
+        const ordersTableBody = document.getElementById('orders-table-body');
+        const sizeTrackingBody = document.getElementById('size-tracking-body');
+        const sizeInputsContainer = document.getElementById('size-inputs');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const orderDetailModal = document.getElementById('order-detail-modal');
+        const closeModalBtn = document.getElementById('close-modal');
+        const backToDashboardBtn = document.getElementById('back-to-dashboard');
+        const submitProductionBtn = document.getElementById('submit-production');
+        const scanBtn = document.getElementById('scan-btn');
+
+        // Initialize the dashboard
+        function initDashboard() {
+            renderOrdersTable();
+            populateSizeInputs();
+            
+            // Set active nav link
+            navLinks.forEach(link => {
+                if (link.getAttribute('data-page') === 'dashboard') {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+        }
+
+        // Render orders table
+        function renderOrdersTable() {
+            ordersTableBody.innerHTML = '';
+            
+            ordersData.forEach(order => {
+                const row = document.createElement('tr');
+                
+                // Determine progress bar class
+                let progressClass = '';
+                if (order.progress >= 70) progressClass = 'progress-70';
+                else if (order.progress >= 45) progressClass = 'progress-45';
+                else if (order.progress >= 90) progressClass = 'progress-90';
+                else progressClass = 'progress-30';
+                
+                // Determine status badge
+                let statusBadge = '';
+                let statusText = '';
+                if (order.status === 'active') {
+                    statusBadge = 'status-active';
+                    statusText = 'Active';
+                } else if (order.status === 'delayed') {
+                    statusBadge = 'status-delayed';
+                    statusText = 'Delayed';
+                } else if (order.status === 'onhold') {
+                    statusBadge = 'status-onhold';
+                    statusText = 'On Hold';
+                }
+                
+                row.innerHTML = `
+                    <td>
+                        <span class="order-id" data-id="${order.id}">${order.id}</span>
+                    </td>
+                    <td>${order.customer}</td>
+                    <td>${order.model}</td>
+                    <td>${order.quantity}</td>
+                    <td>
+                        <div class="progress-container">
+                            <div class="progress-bar">
+                                <div class="progress-fill ${progressClass}"></div>
+                            </div>
+                            <span>${order.progress}%</span>
+                        </div>
+                    </td>
+                    <td><span class="status-badge ${statusBadge}">${statusText}</span></td>
+                    <td>
+                        <button class="btn btn-light" style="padding: 8px 12px; font-size: 14px;" data-id="${order.id}">
+                            <i class="fas fa-eye"></i> View
+                        </button>
+                    </td>
+                `;
+                
+                ordersTableBody.appendChild(row);
+            });
+            
+            // Add event listeners to order IDs and view buttons
+            document.querySelectorAll('.order-id').forEach(el => {
+                el.addEventListener('click', () => openOrderDetail(el.getAttribute('data-id')));
+            });
+            
+            document.querySelectorAll('.btn[data-id]').forEach(btn => {
+                btn.addEventListener('click', () => openOrderDetail(btn.getAttribute('data-id')));
+            });
+        }
+
+        // Populate size inputs for production form
+        function populateSizeInputs() {
+            sizeInputsContainer.innerHTML = '';
+            
+            sizeOptions.forEach(size => {
+                const sizeInput = document.createElement('div');
+                sizeInput.className = 'size-input';
+                sizeInput.innerHTML = `
+                    <label>${size}</label>
+                    <input type="number" value="${Math.floor(Math.random() * 50) + 20}" min="0" max="200">
+                `;
+                sizeInputsContainer.appendChild(sizeInput);
+            });
+        }
+
+        // Open order detail modal
+        function openOrderDetail(orderId) {
+            const order = ordersData.find(o => o.id === orderId);
+            if (!order) return;
+            
+            // Update modal content
+            document.getElementById('modal-order-id').textContent = order.id;
+            document.getElementById('modal-customer').textContent = order.customer;
+            document.getElementById('modal-model').textContent = order.model;
+            document.getElementById('modal-quantity').textContent = order.quantity;
+            document.getElementById('modal-start-date').textContent = order.startDate;
+            document.getElementById('modal-due-date').textContent = order.dueDate;
+            document.getElementById('modal-priority').textContent = order.priority;
+            
+            // Populate size tracking table
+            renderSizeTrackingTable();
+            
+            // Show modal
+            orderDetailModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Render size tracking table in modal
+        function renderSizeTrackingTable() {
+            sizeTrackingBody.innerHTML = '';
+            
+            sizeTrackingData.forEach(item => {
+                const row = document.createElement('tr');
+                
+                row.innerHTML = `
+                    <td><strong>${item.size}</strong><br><small>${item.total} pairs</small></td>
+                    <td class="stage-cell">
+                        <span class="${item.cutting === item.total ? 'stage-complete' : 'stage-inprogress'}">
+                            ${item.cutting === item.total ? '✓ Complete' : `${item.cutting}/${item.total}`}
+                        </span>
+                    </td>
+                    <td class="stage-cell">
+                        <span class="${item.fitting === item.total ? 'stage-complete' : item.fitting > 0 ? 'stage-inprogress' : 'stage-pending'}">
+                            ${item.fitting === item.total ? '✓ Complete' : item.fitting > 0 ? `${item.fitting}/${item.total}` : 'Pending'}
+                        </span>
+                    </td>
+                    <td class="stage-cell">
+                        <span class="${item.bottoming === item.total ? 'stage-complete' : item.bottoming > 0 ? 'stage-inprogress' : 'stage-pending'}">
+                            ${item.bottoming === item.total ? '✓ Complete' : item.bottoming > 0 ? `${item.bottoming}/${item.total}` : 'Pending'}
+                        </span>
+                    </td>
+                    <td class="stage-cell">
+                        <span class="${item.pasting === item.total ? 'stage-complete' : item.pasting > 0 ? 'stage-inprogress' : 'stage-pending'}">
+                            ${item.pasting === item.total ? '✓ Complete' : item.pasting > 0 ? `${item.pasting}/${item.total}` : 'Pending'}
+                        </span>
+                    </td>
+                    <td class="stage-cell">
+                        <span class="${item.packing === item.total ? 'stage-complete' : item.packing > 0 ? 'stage-inprogress' : 'stage-pending'}">
+                            ${item.packing === item.total ? '✓ Complete' : item.packing > 0 ? `${item.packing}/${item.total}` : 'Pending'}
+                        </span>
+                    </td>
+                `;
+                
+                sizeTrackingBody.appendChild(row);
+            });
+        }
+
+        // Navigation handling
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const page = link.getAttribute('data-page');
+                
+                // Update active nav link
+                navLinks.forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+                
+                // Show appropriate content
+                if (page === 'dashboard') {
+                    dashboardContent.style.display = 'block';
+                    productionInputContent.style.display = 'none';
+                } else if (page === 'production-input') {
+                    dashboardContent.style.display = 'none';
+                    productionInputContent.style.display = 'block';
+                }
+                // Other pages would be implemented similarly
+            });
+        });
+
+        // Back to dashboard from production input
+        backToDashboardBtn.addEventListener('click', () => {
+            dashboardContent.style.display = 'block';
+            productionInputContent.style.display = 'none';
+            
+            // Update active nav link
+            navLinks.forEach(link => {
+                if (link.getAttribute('data-page') === 'dashboard') {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+        });
+
+        // Close modal
+        closeModalBtn.addEventListener('click', () => {
+            orderDetailModal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        });
+
+        // Close modal when clicking outside
+        orderDetailModal.addEventListener('click', (e) => {
+            if (e.target === orderDetailModal) {
+                orderDetailModal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Scan barcode simulation
+        scanBtn.addEventListener('click', () => {
+            const barcodeInput = document.getElementById('barcode-input');
+            barcodeInput.value = 'GR-2024-' + Math.floor(1000 + Math.random() * 9000);
+            
+            // Show notification
+            showNotification('Barcode scanned successfully!', 'success');
+        });
+
+        // Submit production data
+        submitProductionBtn.addEventListener('click', () => {
+            const stage = document.getElementById('production-stage').value;
+            const defective = document.getElementById('defective-count').value;
+            const rework = document.getElementById('rework-count').value;
+            const notes = document.getElementById('production-notes').value;
+            
+            // In a real app, this would send data to the server
+            console.log('Submitting production data:', {
+                stage,
+                defective,
+                rework,
+                notes
+            });
+            
+            // Show success message
+            showNotification(`Production data for ${stage} stage submitted successfully!`, 'success');
+            
+            // Reset form
+            document.getElementById('defective-count').value = '0';
+            document.getElementById('rework-count').value = '0';
+            document.getElementById('production-notes').value = '';
+            
+            // Go back to dashboard after 2 seconds
+            setTimeout(() => {
+                dashboardContent.style.display = 'block';
+                productionInputContent.style.display = 'none';
+                
+                // Update active nav link
+                navLinks.forEach(link => {
+                    if (link.getAttribute('data-page') === 'dashboard') {
+                        link.classList.add('active');
+                    } else {
+                        link.classList.remove('active');
+                    }
+                });
+            }, 2000);
+        });
+
+        // Show notification function
+        function showNotification(message, type) {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 20px;
+                background: ${type === 'success' ? '#27ae60' : '#e74c3c'};
+                color: white;
+                border-radius: 6px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                z-index: 10000;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                animation: slideIn 0.3s ease;
+            `;
+            
+            notification.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+                <span>${message}</span>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Remove notification after 3 seconds
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
+        }
+
+        // Add CSS animations for notifications
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', initDashboard);
+    </script>
+</body>
+</html>
